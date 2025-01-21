@@ -54,8 +54,8 @@ getirUrls = {
     "fit": "fit-form-A9ciT987qU",
 }
 
-def veriDonustur():
-    
+# Json formatındaki verilerin Df haline dönüştürülmesi
+def veriDonustur():    
     productType = []
     name=[]
     price=[]
@@ -81,9 +81,39 @@ def veriDonustur():
         pass
 
 dfUrun = pd.DataFrame()
-for k in getirUrls.keys():
-    
+#Getir sitesindeki verilerin toplanıp düzenlenmesi
+for k in getirUrls.keys():  
     r = requests.get(getirBaseUrl+getirUrls[k], headers=headers1)
     x = r.json()
     df = veriDonustur()
     dfUrun = pd.concat([dfUrun,df])
+
+
+#GETIR BÜYÜK    
+#%%
+getirBuyukUrls = {
+    "su": "su-icecek-ewknEvzsJc",
+    "meyve": "meyve-sebze-VN2A9ap5Fm",
+    "et": "et-tavuk-balik-P1593VdPBd",
+    "sut": "sut-urunleri-JGtfnNALTJ",
+    "firindan": "firindan-q357eEdgBs",
+    "atistirmalik": "atistirmalik-BaaxwkyV1y",
+    "dondurma": "dondurma-Aw6YFhRWBI",
+    "temelgida": "temel-gida-IQH9bir3bX",
+    "kahvaltilik": "kahvalti-iat0l1yrkf",
+    "yiyecek": "yiyecek-0VLJmBhnI3",
+    "fit": "fit-form-A9ciT987qU",
+    
+}
+getirBuyukBaseUrl = "https://market-client-api-gateway.getirapi.com/category/products?countryCode=TR&categorySlug="
+#Getir Büyük sitesindeki verilerin toplanıp düzenlenmesi
+for k in getirBuyukUrls.keys(): 
+    r = requests.get(getirBuyukBaseUrl+getirBuyukUrls[k], headers=headers1)
+    x = r.json()
+    df = veriDonustur()
+    dfUrun = pd.concat([dfUrun,df])
+
+#Df içerisindeki indexler unique hale getirilmek için resetlenir.
+dfUrun.reset_index(inplace=True)
+#Df içerisindeki gereksiz sütun silinir.
+dfUrun.drop("index", axis=1, inplace=True)
