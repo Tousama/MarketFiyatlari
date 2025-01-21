@@ -117,3 +117,6 @@ for k in getirBuyukUrls.keys():
 dfUrun.reset_index(inplace=True)
 #Df içerisindeki gereksiz sütun silinir.
 dfUrun.drop("index", axis=1, inplace=True)
+
+#Getir ve GetirBüyük'teki ürünlerin excel olarak kaydedilmesi
+dfUrun.to_excel("GetirFiyatlar.xlsx")
